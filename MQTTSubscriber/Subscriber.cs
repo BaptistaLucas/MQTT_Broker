@@ -38,7 +38,7 @@ namespace MQTTSubscriber
             client.UseApplicationMessageReceivedHandler(async e => //manipula as mensagem recebidas 
             {
                 //como payload é uma matriz de byte precisamos converter em string
-                Console.WriteLine($"mensagem recebida {Encoding.UTF8.GetString(e.ApplicationMessage.Payload)}");
+                Console.WriteLine($"mensagem recebida {Encoding.UTF8.GetString(e.ApplicationMessage.Payload)}\n");
                 var enviar = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
                 if(enviar!=null) // se a enviar estiver diferente de nulo envia para o webhook 
                 {
@@ -56,7 +56,7 @@ namespace MQTTSubscriber
 
             Console.ReadLine();
 
-            await client.DisconnectAsync();
+            //await client.DisconnectAsync();
 
 
         }

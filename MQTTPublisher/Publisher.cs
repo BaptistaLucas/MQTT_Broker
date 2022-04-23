@@ -20,29 +20,37 @@ namespace MQTTPublisher
                         .Build();
             client.UseConnectedHandler(e =>    //evento ao conectar com o broker
             {
-                Console.WriteLine("Conectado ao broker com sucesso ");
+                Console.WriteLine("Conectado ao broker com sucesso\n ");
             });
 
-            client.UseDisconnectedHandler(e =>  //evento ao Desconectar do broker
-            {
-                Console.WriteLine("Desconectado do broker com sucesso");
-            });
-
+            //client.UseDisconnectedHandler(e =>  //evento ao Desconectar do broker
+            //{
+            //    Console.WriteLine("Desconectado do broker com sucesso");
+            //});
+            string x;
             await client.ConnectAsync(options); // estabelecendo a conexão 
+            while (true)
+            {
+                //Console.WriteLine("Por favor, pressione uma tecla para publicar a mensagem");
+                //Console.ReadLine();
 
-            Console.WriteLine("Por favor, pressione uma tecla para publicar a mensagem"); 
-            Console.ReadLine();
 
-           
-            await PublishMessageAsync(client);
-            Console.WriteLine("Para sair presione uma tecla");
-            Console.ReadLine();
-            await client.DisconnectAsync(); //desconecata apos publicao 
+                await PublishMessageAsync(client);
+                Console.WriteLine("Para sair presione uma tecla - x, ou qualquer tecla para continuar\n");
+                x = Console.ReadLine();
+                if(x == "x")
+                {
+                    await client.DisconnectAsync(); //desconecata apos publicao 
+                    break;
+                }
+                
+            }
+
         }
 
         static async Task PublishMessageAsync(IMqttClient client) // metodo que publica a mensagem 
         {
-            Console.WriteLine("Por favor, digite a mensagem");
+            Console.WriteLine("Por favor, digite a mensagem\n");
             var mensagem = Console.ReadLine();
             string messagePayLoad = $"{mensagem} ";
             var message = new MqttApplicationMessageBuilder()
@@ -54,7 +62,7 @@ namespace MQTTPublisher
             if (client.IsConnected)  //verificando se o cliente está conectado 
             {
                 await client.PublishAsync(message);
-                Console.WriteLine($"mensagem publicada - {messagePayLoad}");
+                Console.WriteLine($"mensagem publicada - {messagePayLoad}\n");
             }
         }
     }
